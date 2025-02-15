@@ -14,12 +14,12 @@ public class CommentRepository : ICommentRepository
         _context = context;
     }
 
-    //public async Task<Comment> CreateAsync(Comment commentModel)
-    //{
-    //    await _context.Comments.AddAsync(commentModel);
-    //    await _context.SaveChangesAsync();
-    //    return commentModel;
-    //}
+    public async Task<Comment> CreateAsync(Comment commentModel)
+    {
+        await _context.Comments.AddAsync(commentModel);
+        await _context.SaveChangesAsync();
+        return commentModel;
+    }
 
     //public async Task<Comment?> DeleteAsync(int id)
     //{

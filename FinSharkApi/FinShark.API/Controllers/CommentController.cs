@@ -1,4 +1,5 @@
-﻿using FinShark.API.Interfaces;
+﻿using FinShark.API.DTOs.Comment;
+using FinShark.API.Interfaces;
 using FinShark.API.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace FinShark.API.Controllers;
 public class CommentController : ControllerBase
 {
     private readonly ICommentRepository _commentRepo;
+    private readonly IStockRepository _stockRepo;
 
-    public CommentController(ICommentRepository commentRepo)
+    public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
     {
         _commentRepo = commentRepo;
+        _stockRepo = stockRepo;
     }
 
     [HttpGet]
@@ -30,5 +33,16 @@ public class CommentController : ControllerBase
         return comment != null ?
             Ok(comment.ToCommentDto()) :
             NotFound();
+    }
+
+    [HttpPost("{stockId}")]
+    public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
+    {
+        if (!await _stockRepo.StockExists(stockId))
+            return BadRequest("The stock doesn't exist.");
+
+        var commentModel = commentDto.ToCommentFromCreateDto(stockId);
+        await _commentRepo.CreateAsync(commentModel);
+        return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
     }
 }
