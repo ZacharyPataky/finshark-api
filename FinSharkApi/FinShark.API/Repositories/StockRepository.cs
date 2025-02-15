@@ -1,7 +1,6 @@
 ﻿using FinShark.API.Data;
 using FinShark.API.DTOs.Stock;
 using FinShark.API.Interfaces;
-using FinShark.API.Mappers;
 using FinShark.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +13,6 @@ public class StockRepository : IStockRepository
     public StockRepository(ApplicationDbContext context)
     {
         _context = context;
-
     }
 
     public async Task<Stock> CreateAsync(Stock stockModel)
