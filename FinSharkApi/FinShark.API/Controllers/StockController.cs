@@ -4,6 +4,7 @@ using FinShark.API.Helpers;
 using FinShark.API.Interfaces;
 using FinShark.API.Mappers;
 using FinShark.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinShark.API.Controllers;
@@ -19,6 +20,7 @@ public class StockController : ControllerBase
         _stockRepo = stockRepo;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
     {
@@ -34,6 +36,7 @@ public class StockController : ControllerBase
         return Ok(ApiResponse<List<StockDto>>.SuccessResponse(stockDtos));
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -50,6 +53,7 @@ public class StockController : ControllerBase
             NotFound(ApiResponse<StockDto>.FailureResponse("The stock does not exist."));
     }
 
+    [Authorize]
     [HttpPost()]
     public async Task<IActionResult> Create([FromBody] CreateStockDto stockDto)
     {
@@ -65,6 +69,7 @@ public class StockController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = stockModel.Id }, stockModel.ToStockDto());
     }
 
+    [Authorize]
     [HttpPut]
     [Route("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateStockDto updateDto)
@@ -82,6 +87,7 @@ public class StockController : ControllerBase
             NotFound(ApiResponse<StockDto>.FailureResponse("The stock does not exist."));
     }
 
+    [Authorize]
     [HttpDelete]
     [Route("{id:int}")]
     public async Task<IActionResult> Delete([FromRoute] int id)

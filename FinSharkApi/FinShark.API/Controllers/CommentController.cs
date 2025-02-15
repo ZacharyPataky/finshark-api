@@ -4,6 +4,7 @@ using FinShark.API.Helpers;
 using FinShark.API.Interfaces;
 using FinShark.API.Mappers;
 using FinShark.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinShark.API.Controllers;
@@ -21,6 +22,7 @@ public class CommentController : ControllerBase
         _stockRepo = stockRepo;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -36,6 +38,7 @@ public class CommentController : ControllerBase
         return Ok(ApiResponse<List<CommentDto>>.SuccessResponse(commentDtos));
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
@@ -52,6 +55,7 @@ public class CommentController : ControllerBase
             NotFound(ApiResponse<CommentDto>.FailureResponse("The comment does not exist."));
     }
 
+    [Authorize]
     [HttpPost("{stockId:int}")]
     public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
     {
@@ -70,6 +74,7 @@ public class CommentController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
     }
 
+    [Authorize]
     [HttpPut]
     [Route("{id:int}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentDto updateDto)
@@ -87,6 +92,7 @@ public class CommentController : ControllerBase
             NotFound(ApiResponse<CommentDto>.FailureResponse("The comment does not exist."));
     }
 
+    [Authorize]
     [HttpDelete]
     [Route("{id:int}")]
     public async Task<IActionResult> Delete([FromRoute] int id)
