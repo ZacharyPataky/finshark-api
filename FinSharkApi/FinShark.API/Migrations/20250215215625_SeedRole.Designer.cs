@@ -4,6 +4,7 @@ using FinShark.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinShark.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250215215625_SeedRole")]
+    partial class SeedRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,13 +182,13 @@ namespace FinShark.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "25622371-0be0-48f0-aaf6-a40661b14606",
+                            Id = "fd586c27-6006-4725-aeb1-ba0d670715cb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "423c81a5-f153-46fe-a4fc-3456024e640d",
+                            Id = "8f8b8060-5d4a-44bc-84f1-5b21684a2bcd",
                             Name = "User",
                             NormalizedName = "USER"
                         });

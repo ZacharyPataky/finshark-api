@@ -15,6 +15,11 @@ public class ApiResponse<T>
         Errors = errors;
     }
 
+    public static ApiResponse<T> SuccessResponse(string message = "Request was successful.")
+    {
+        return new ApiResponse<T>(true, message, default);
+    }
+
     public static ApiResponse<T> SuccessResponse(T data, string message = "Request was successful.")
     {
         return new ApiResponse<T>(true, message, data);
