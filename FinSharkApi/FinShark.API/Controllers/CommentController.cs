@@ -1,10 +1,12 @@
 ﻿using FinShark.API.DTOs;
 using FinShark.API.DTOs.Comment;
+using FinShark.API.Extensions;
 using FinShark.API.Helpers;
 using FinShark.API.Interfaces;
 using FinShark.API.Mappers;
 using FinShark.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinShark.API.Controllers;
@@ -15,11 +17,14 @@ public class CommentController : ControllerBase
 {
     private readonly ICommentRepository _commentRepo;
     private readonly IStockRepository _stockRepo;
+    private readonly UserManager<AppUser> _userManager;
 
-    public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo)
+    public CommentController(ICommentRepository commentRepo, IStockRepository stockRepo,
+        UserManager<AppUser> userManager)
     {
         _commentRepo = commentRepo;
         _stockRepo = stockRepo;
+        _userManager = userManager;
     }
 
     [Authorize]
@@ -69,7 +74,11 @@ public class CommentController : ControllerBase
         if (!await _stockRepo.StockExists(stockId))
             return BadRequest(ApiResponse<CommentDto>.FailureResponse("The stock does not exist."));
 
+        var username = User.GetUsername();
+        var appUser = await _userManager.FindByNameAsync(username);
+
         var commentModel = commentDto.ToCommentFromCreateDto(stockId);
+        commentModel.AppUserId = appUser.Id;
         await _commentRepo.CreateAsync(commentModel);
         return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
     }
