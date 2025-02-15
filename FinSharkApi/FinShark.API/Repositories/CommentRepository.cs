@@ -14,14 +14,14 @@ public class CommentRepository : ICommentRepository
         _context = context;
     }
 
-    //public Task<Comment> CreateAsync(Comment commentModel)
+    //public async Task<Comment> CreateAsync(Comment commentModel)
     //{
     //    await _context.Comments.AddAsync(commentModel);
     //    await _context.SaveChangesAsync();
     //    return commentModel;
     //}
 
-    //public Task<Comment?> DeleteAsync(int id)
+    //public async Task<Comment?> DeleteAsync(int id)
     //{
     //    throw new NotImplementedException();
     //}
@@ -31,12 +31,12 @@ public class CommentRepository : ICommentRepository
         return await _context.Comments.ToListAsync();
     }
 
-    //public Task<Comment?> GetByIdAsync(int id)
-    //{
-    //    throw new NotImplementedException();
-    //}
+    public async Task<Comment?> GetByIdAsync(int id)
+    {
+        return await _context.Comments.FindAsync(id);
+    }
 
-    //public Task<Comment?> UpdateAsync(int id, UpdateCommentRequestDto commentDto)
+    //public async Task<Comment?> UpdateAsync(int id, UpdateCommentRequestDto commentDto)
     //{
     //    throw new NotImplementedException();
     //}
