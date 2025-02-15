@@ -20,7 +20,7 @@ public class StockController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
     {
         if(!ModelState.IsValid)
         {
@@ -29,7 +29,7 @@ public class StockController : ControllerBase
                 .FailureResponse("Invalid validation", errors));
         }
 
-        var stocks = await _stockRepo.GetAllAsync();
+        var stocks = await _stockRepo.GetAllAsync(query);
         var stockDtos = stocks.Select(s => s.ToStockDto()).ToList();
         return Ok(ApiResponse<List<StockDto>>.SuccessResponse(stockDtos));
     }
